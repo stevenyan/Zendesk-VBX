@@ -1,8 +1,7 @@
 <?php
 $CI =& get_instance();
-$user_id = $CI->session->userdata('user_id');
-$zendesk_user = PluginStore::get('zendesk_user_'.$user_id);
-$dial_target = AppletInstance::getValue('dial-target', 'user-or-group');
+$zendesk_user = PluginStore::get('zendesk_user');
+$currentlyIsUser = AppletInstance::getUserGroupPickerValue('permissions') instanceof VBX_User; 
 ?>
 <style>
 a.ajax_loader { background:url(<?php echo base_url() ?>assets/i/ajax-loader.gif); display:inline-block; width:16px; height:11px; vertical-align:middle; }
@@ -19,7 +18,7 @@ span[class$="err"] { color:red; }
         <p>It looks like you are setting up for the first time. Please enter your access credentials so we can connect to Zendesk.</p>
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
-            <label>Zendesk Url - the url to your Zendesk which is something like yoursite.zendesk.com.</label>
+            <label>Zendesk Url - the url to your Zendesk which is something like http://yoursite.zendesk.com.</label>
             <input name="zendesk_url" class="medium" type="text" value="" />
             <span class="zendesk_url_err"></span>
         </div>
@@ -47,10 +46,26 @@ span[class$="err"] { color:red; }
     </div>
     <?php endif; ?>
 
-    <div id="connect_to_voicemail" class="section">
-        <h2>Connect to User's Voicemail and Create Ticket in Zendesk</h2>
-        <div><?php echo AppletUI::UserGroupPicker('dial-target'); ?></div>
-    </div><!-- #highrise_connect_to -->
+    <div class="prompt-for-group" style="display: <?php echo $currentlyIsUser ? "none" : ""  ?>">
+        <h2>Prompt</h2>
+        <p>What will the caller hear before leaving their message?</p>
+        <?php echo AppletUI::AudioSpeechPicker('prompt') ?>
+    </div>
+    
+    <div class="prompt-for-individual" style="display: <?php echo !$currentlyIsUser ? "none" : ""  ?>">
+        <h2>Prompt</h2>
+        
+        <div class="vbx-full-pane">
+            <fieldset class="vbx-input-container">
+                The individual's personal voicemail greeting will be played.
+            </fieldset>
+        </div>
+    </div>
+    <br />
+
+    <h2>Take voicemail</h2>
+    <p>Which individual or group should receive the voicemail?</p>
+    <?php echo AppletUI::UserGroupPicker('permissions'); ?>
 </div>
 
 <script>

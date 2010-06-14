@@ -1,8 +1,7 @@
 <?php
 $CI =& get_instance();
 $op = @$_REQUEST['op'];
-$user_id = $CI->session->userdata('user_id');
-$zendesk_user = PluginStore::get('zendesk_user_'.$user_id);
+$zendesk_user = PluginStore::get('zendesk_user');
 
 if($op == 'test_credentials') 
 { // {{{
@@ -21,7 +20,7 @@ if($op == 'test_credentials')
 
         $ch = curl_init();
         curl_setopt_array($ch, array(
-            CURLOPT_URL => 'http://'.$url.'/users.json',
+            CURLOPT_URL => $url.'/users.json',
             CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
             CURLOPT_HEADER => false,
             CURLOPT_FOLLOWLOCATION => true,
@@ -90,7 +89,7 @@ if($op == 'test_credentials')
 
             case 'SUCCESS':
                 // If credentials are valid, store it to plugin store for this user
-                PluginStore::set('zendesk_user_'.$user_id, array(
+                PluginStore::set('zendesk_user', array(
                     'url' => $url,
                     'email' => $email,
                     'password' => $password
@@ -115,6 +114,17 @@ if($op == 'test_credentials')
     }
     echo '<JSON_DATA>'.json_encode($results).'</JSON_DATA>';
 } // }}}
+
+elseif($op == 'delete_credentials')
+{ // {{{
+    PluginStore::set('zendesk_user', '');
+    $results = array(
+        'msg' => 'Zendesk credentials erased.',
+        'key' => 'SUCCESS',
+        'type' => 'success'
+    );
+    echo '<JSON_DATA>'.json_encode($results).'</JSON_DATA>';
+} // }}}
 ?>
 
 <?php if(empty($op)): ?>
@@ -132,19 +142,19 @@ div.system_msg > * { vertical-align:middle; }
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
             <label>Zendesk URL - the URL to your Zendesk which is something like https://yoursite.zendesk.com.</label>
-            <input name="zendesk_url" class="medium" type="text" value="<?php echo $zendesk_user['url'] ?>" />
+            <input name="zendesk_url" class="medium" type="text" value="<?php echo $zendesk_user->url ?>" />
             <span class="zendesk_url_err"></span>
         </div>
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
             <label>Email - your email used to login to Zendesk</label>
-            <input name="zendesk_email" class="medium" type="text" value="<?php echo $zendesk_user['email'] ?>" />
+            <input name="zendesk_email" class="medium" type="text" value="<?php echo $zendesk_user->email ?>" />
             <span class="zendesk_email_err"></span>
         </div>
 
         <div class="vbx-input-container input" style="margin-bottom:5px;">
             <label>Password - your password used to login to Zendesk</label>
-            <input name="zendesk_password" class="medium" type="password" value="<?php echo $zendesk_user['password'] ?>" />
+            <input name="zendesk_password" class="medium" type="password" value="<?php echo $zendesk_user->password ?>" />
             <span class="zendesk_password_err"></span>
         </div>
 
@@ -152,10 +162,18 @@ div.system_msg > * { vertical-align:middle; }
             <button id="save_cred_btn" class="inline-button submit-button" style="margin-top:5px; vertical-align:center;">
                 <span>Save</span>
             </button>
+            <a class="delete_creds_btn" href="#">Delete</a>
             <div class="system_msg"></div>
         </div>
 
         <div style="clear:both;"></div>
     </div><!-- #zendesk_api_access -->
 </div>
+
+<script>
+var base_url = '<?php echo base_url() ?>';
+</script>
+
+<?php $CI->template->add_js('plugins/Zendesk-VBX/config.js') ?>
+
 <?php endif; ?>

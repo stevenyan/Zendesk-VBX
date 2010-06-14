@@ -1,6 +1,5 @@
 <?php
 $CI =& get_instance();
-$dial_target = AppletInstance::getUserGroupPickerValue('dial-target');
 $status = @$_REQUEST['status'];
 $flow = @AppletInstance::getFlow();
 $flow_id = $flow->id;
@@ -10,7 +9,7 @@ function zendesk_client($path, $method='GET', $xml = '')
 { // {{{
     $ch = curl_init();
     curl_setopt_array($ch, array(
-        CURLOPT_URL => 'http://'.ZENDESK_URL.$path,
+        CURLOPT_URL => ZENDESK_URL.$path,
         CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
         CURLOPT_HEADER => FALSE,
         CURLOPT_FOLLOWLOCATION => TRUE,
@@ -50,7 +49,7 @@ function zendesk_client($path, $method='GET', $xml = '')
         error_log('CURL failed due to '.curl_error());
         return FALSE;
     } else {
-        error_log('results: '.$results);
+        if($ch_info['http_code'] >= 200 && $ch_info['http_code'] < 300) return TRUE;
     }
 
     return FALSE;
@@ -60,7 +59,8 @@ $response = new Response(); // start a new Twiml response
 
 if($status == 'save-call' && @$_REQUEST['RecordingUrl']) {
 	// add a voice message 
-	OpenVBX::addVoiceMessage($dial_target,
+	OpenVBX::addVoiceMessage(
+        AppletInstance::getUserGroupPickerValue('permissions'),
         $_REQUEST['CallSid'],
         $_REQUEST['Caller'],
         $_REQUEST['Called'], 
@@ -68,8 +68,7 @@ if($status == 'save-call' && @$_REQUEST['RecordingUrl']) {
         $_REQUEST['Duration']
     );		
 } else if($status == 'transcribe-call') {
-    $user_id = $dial_target->id;
-    $zendesk_user = $CI->db->get_where('plugin_store', array('key' => 'zendesk_user_'.$user_id))->row();
+    $zendesk_user = $CI->db->get_where('plugin_store', array('key' => 'zendesk_user'))->row();
     $zendesk_user = json_decode($zendesk_user->value);
 
     define('ZENDESK_URL', $zendesk_user->url);
@@ -79,20 +78,19 @@ if($status == 'save-call' && @$_REQUEST['RecordingUrl']) {
     // create a ticket to zendesk
     $xml =
         '<ticket>'.
-            '<subject>Phone Call from '.format_phone($_REQUEST['Caller']).'on '.date('M d g:i a').'</subject>'.
-            '<description>'.$_REQUEST['TranscriptionText'].'\nRecording:'.$_REQUEST['RecordingUrl'].'</description>'.
+            '<subject>Phone Call from '.format_phone($_REQUEST['Caller']).' on '.date('M d g:i a').'</subject>'.
+            '<description>'.$_REQUEST['TranscriptionText']."\n".'Recording:'.$_REQUEST['RecordingUrl'].'</description>'.
         '</ticket>';
     $new_ticket = zendesk_client('/tickets.xml', 'POST', $xml);
-    error_log('new_ticket: '.$new_ticket);
 
     $params = http_build_query($_REQUEST);
     $redirect_url = site_url('twiml/transcribe').'?'.$params;
     header("Location: $redirect_url");
 } else {
-	$dial_target = AppletInstance::getUserGroupPickerValue('dial-target'); // get the prompt that the user configured
-	$isUser = $dial_target instanceOf VBX_User? TRUE : FALSE;
+	$permissions = AppletInstance::getUserGroupPickerValue('permissions'); // get the prompt that the user configured
+	$isUser = $permissions instanceOf VBX_User? TRUE : FALSE;
 
-	if($isUser) $prompt = $dial_target->voicemail;
+	if($isUser) $prompt = $permissions->voicemail;
 	else $prompt = AppletInstance::getAudioSpeechPickerValue('prompt');
 
 	$verb = AudioSpeechPickerWidget::getVerbForValue($prompt, new Say("Please leave a message."));
