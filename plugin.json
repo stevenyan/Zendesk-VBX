@@ -1,0 +1,5 @@
+{
+    "name": "Zendesk",
+    "author": "Will Tran <wtran@twilio.com>",
+    "description": "Integrates Zendesk to OpenVBX. Incoming messages to OpenVBX will create a ticket in Zendesk."
+}

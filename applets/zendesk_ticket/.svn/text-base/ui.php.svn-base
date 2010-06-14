@@ -1,0 +1,59 @@
+<?php
+$CI =& get_instance();
+$user_id = $CI->session->userdata('user_id');
+$zendesk_user = PluginStore::get('zendesk_user_'.$user_id);
+$dial_target = AppletInstance::getValue('dial-target', 'user-or-group');
+?>
+<style>
+a.ajax_loader { background:url(<?php echo base_url() ?>assets/i/ajax-loader.gif); display:inline-block; width:16px; height:11px; vertical-align:middle; }
+div.system_msg { display:inline-block; line-height:30px; vertical-align:center; }
+div.system_msg > * { vertical-align:middle; }
+div.vbx-applet div.section { margin-bottom:20px; }
+span[class$="err"] { color:red; }
+</style>
+
+<div class="vbx-applet">
+    <?php if(empty($zendesk_user)): ?>
+    <div id="zendesk_api_access" class="section">
+        <h2>Zendesk API Access</h2>
+        <p>It looks like you are setting up for the first time. Please enter your access credentials so we can connect to Zendesk.</p>
+
+        <div class="vbx-input-container input" style="margin-bottom:10px;">
+            <label>Zendesk Url - the url to your Zendesk which is something like yoursite.zendesk.com.</label>
+            <input name="zendesk_url" class="medium" type="text" value="" />
+            <span class="zendesk_url_err"></span>
+        </div>
+
+        <div class="vbx-input-container input" style="margin-bottom:10px;">
+            <label>Email - your email used to login to Zendesk</label>
+            <input name="zendesk_email" class="medium" type="text" value="" />
+            <span class="zendesk_email_err"></span>
+        </div>
+
+        <div class="vbx-input-container input" style="margin-bottom:5px;">
+            <label>Password - your password used to login to Zendesk</label>
+            <input name="zendesk_password" class="medium" type="password" value="" />
+            <span class="zendesk_password_err"></span>
+        </div>
+
+        <div style="line-height:30px;">
+            <button class="inline-button submit-button" style="margin-top:5px; vertical-align:center;">
+                <span>Test</span>
+            </button>
+            <div class="system_msg"></div>
+        </div>
+
+        <div style="clear:both;"></div>
+    </div>
+    <?php endif; ?>
+
+    <div id="connect_to_voicemail" class="section">
+        <h2>Connect to User's Voicemail and Create Ticket in Zendesk</h2>
+        <div><?php echo AppletUI::UserGroupPicker('dial-target'); ?></div>
+    </div><!-- #highrise_connect_to -->
+</div>
+
+<script>
+var base_url = '<?php echo base_url() ?>';
+var zendesk_user_data = <?php echo empty($zendesk_user) ? 'false' : 'true' ?>;
+</script>

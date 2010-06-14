@@ -1,0 +1,31 @@
+8
+
+dir
+4239
+https://svn.twilio.com/apps/OpenVBX-plugins/trunk/zendesk/applets
+https://svn.twilio.com/apps
+
+
+
+2010-06-12T19:55:19.870666Z
+4238
+wtran
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+173e988a-c215-446b-9fd9-bce266d0efbe
+
+zendesk_ticket
+dir
+
