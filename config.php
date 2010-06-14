@@ -142,19 +142,19 @@ div.system_msg > * { vertical-align:middle; }
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
             <label>Zendesk URL - the URL to your Zendesk which is something like https://yoursite.zendesk.com.</label>
-            <input name="zendesk_url" class="medium" type="text" value="<?php echo $zendesk_user->url ?>" />
+            <input name="zendesk_url" class="medium" type="text" value="<?php echo @$zendesk_user->url ?>" />
             <span class="zendesk_url_err"></span>
         </div>
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
             <label>Email - your email used to login to Zendesk</label>
-            <input name="zendesk_email" class="medium" type="text" value="<?php echo $zendesk_user->email ?>" />
+            <input name="zendesk_email" class="medium" type="text" value="<?php echo @$zendesk_user->email ?>" />
             <span class="zendesk_email_err"></span>
         </div>
 
         <div class="vbx-input-container input" style="margin-bottom:5px;">
             <label>Password - your password used to login to Zendesk</label>
-            <input name="zendesk_password" class="medium" type="password" value="<?php echo $zendesk_user->password ?>" />
+            <input name="zendesk_password" class="medium" type="password" value="<?php echo @$zendesk_user->password ?>" />
             <span class="zendesk_password_err"></span>
         </div>
 
