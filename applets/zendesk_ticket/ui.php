@@ -11,7 +11,7 @@ div.vbx-applet div.section { margin-bottom:20px; }
 span[class$="err"] { color:red; }
 </style>
 
-<div class="vbx-applet">
+<div class="vbx-applet zendesk_ticket_applet">
     <?php if(empty($zendesk_user)): ?>
     <div id="zendesk_api_access" class="section">
         <h2>Zendesk API Access</h2>
