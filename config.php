@@ -144,7 +144,7 @@ div.system_msg > * { vertical-align:middle; }
 
         <div class="vbx-input-container input" style="margin-bottom:5px;">
             <label>Password - your password used to login to Zendesk</label>
-            <input name="zendesk_password" class="medium" type="password" value="<?php echo $zendesk_password ?>" />
+            <input name="zendesk_password" class="medium" type="password" value="<?php echo $zendesk_user['password'] ?>" />
             <span class="zendesk_password_err"></span>
         </div>
 

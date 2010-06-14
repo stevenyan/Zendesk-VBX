@@ -37,7 +37,7 @@ span[class$="err"] { color:red; }
         </div>
 
         <div style="line-height:30px;">
-            <button class="inline-button submit-button" style="margin-top:5px; vertical-align:center;">
+            <button id="zendesk-test-creds-submit" class="inline-button submit-button" style="margin-top:5px; vertical-align:center;">
                 <span>Test</span>
             </button>
             <div class="system_msg"></div>

@@ -17,12 +17,11 @@ $(document).ready(function() {
         if(errors.length == 0) {
             $('div.system_msg').html('<a class="ajax_loader"></a> Testing your credentials.');
             $.post(
-                base_url + 'plugin/config/zendesk/config/zendesk?op=test_credentials',
+                base_url + 'config/Zendesk-VBX?op=test_credentials',
                 { url:url_el.val(), email:email_el.val(), password:password_el.val() },
                 function(resp) {
                     try {
                         resp = resp.match(/JSON_DATA\>(.*)\<\/JSON_DATA/)[1];
-                        console.log(resp);
                         resp = eval("(" + resp + ")");
                         var sys_msg = '';
                         var sys_msg_type = 'error';
@@ -44,7 +43,7 @@ $(document).ready(function() {
         }
     }
 
-    $('.flow-instance.zendesk---zendesk_ticket .submit-button').live('click', function(e) {
+    $('#zendesk-test-creds-submit').live('click', function(e) {
         var instance = $(this).parent().parent().parent();
         submitTestZendeskCredForm(instance);
         e.preventDefault();
