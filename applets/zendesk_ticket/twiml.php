@@ -74,11 +74,12 @@ if($status == 'save-call' && @$_REQUEST['RecordingUrl']) {
     define('ZENDESK_URL', $zendesk_user->url);
     define('ZENDESK_EMAIL', $zendesk_user->email);
     define('ZENDESK_PASSWORD', $zendesk_user->password);
+    define('ZENDESK_TIMEZONE', int($zendesk_user->timezone));
 
     // create a ticket to zendesk
     $xml =
         '<ticket>'.
-            '<subject>Phone Call from '.format_phone($_REQUEST['Caller']).' on '.date('M d g:i a').'</subject>'.
+            '<subject>Phone Call from '.format_phone($_REQUEST['Caller']).' on '.gmdate('M d g:i a', gmmktime()+(ZENDESK_TIMEZONE*60)).'</subject>'.
             '<description>'.$_REQUEST['TranscriptionText']."\n".'Recording:'.$_REQUEST['RecordingUrl'].'</description>'.
         '</ticket>';
     $new_ticket = zendesk_client('/tickets.xml', 'POST', $xml);
