@@ -1,7 +1,7 @@
 <?php
 $CI =& get_instance();
 $op = @$_REQUEST['op'];
-$zendesk_user = PluginStore::get('zendesk_user');
+$zendesk_user = PluginData::get('zendesk_user');
 
 if($op == 'test_credentials') 
 { // {{{
@@ -9,7 +9,7 @@ if($op == 'test_credentials')
         $email = @$_REQUEST['email'];
         $password = @$_REQUEST['password'];
         $url = @$_REQUEST['url'];
-        $timezone = int(@$_REQUEST['timezone'])
+        $timezone = (int) @$_REQUEST['timezone'];
 
         $errors = array();
         if(empty($email)) $errors[] = array( 'msg'=>'Email is required.', 'name'=>'zendesk_email' );
@@ -90,7 +90,7 @@ if($op == 'test_credentials')
 
             case 'SUCCESS':
                 // If credentials are valid, store it to plugin store for this user
-                PluginStore::set('zendesk_user', array(
+                PluginData::set('zendesk_user', array(
                     'url' => $url,
                     'email' => $email,
                     'password' => $password,
@@ -119,7 +119,7 @@ if($op == 'test_credentials')
 
 elseif($op == 'delete_credentials')
 { // {{{
-    PluginStore::set('zendesk_user', '');
+    PluginData::set('zendesk_user', '');
     $results = array(
         'msg' => 'Zendesk credentials erased.',
         'key' => 'SUCCESS',
@@ -143,7 +143,7 @@ div.system_msg > * { vertical-align:middle; }
         <p>Please enter your access info so we can update Zendesk with incoming messages.</p>
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
-            <label>Zendesk URL - the URL to your Zendesk which is something like https://yoursite.zendesk.com.</label>
+            <label>Zendesk URL - the URL to your Zendesk which is something like http or https://yoursite.zendesk.com.</label>
             <input name="zendesk_url" class="medium" type="text" value="<?php echo @$zendesk_user->url ?>" />
             <span class="zendesk_url_err"></span>
         </div>

@@ -18,7 +18,7 @@ span[class$="err"] { color:red; }
         <p>It looks like you are setting up for the first time. Please enter your access credentials so we can connect to Zendesk.</p>
 
         <div class="vbx-input-container input" style="margin-bottom:10px;">
-            <label>Zendesk Url - the url to your Zendesk which is something like http://yoursite.zendesk.com.</label>
+            <label>Zendesk Url - the url to your Zendesk which is something like https or http://yoursite.zendesk.com.</label>
             <input name="zendesk_url" class="medium" type="text" value="" />
             <span class="zendesk_url_err"></span>
         </div>
