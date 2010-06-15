@@ -32,9 +32,6 @@ if($op == 'test_credentials')
         $results = curl_exec($ch);
         $ch_info = curl_getinfo($ch);
 
-        error_log('RESULTS: '.json_encode($results));
-        error_log('CH_INFO: '.json_encode($ch_info));
-
         if(curl_errno($ch)) {
             error_log('CURL failed due to '.curl_error());
             return FALSE;
