@@ -11,7 +11,7 @@ $(document).ready(function() {
         var password_el = $('input[name="zendesk_password"]', app);
 
         $('span[class$="_err"]').empty();
-        $('div.system_msg').empty().css('color', 'inherit');
+        $('div.system_msg', app).empty().css('color', 'inherit');
 
         var errors = [];
         if(url_el.val().trim() == '') errors.push({ name:'zendesk_url', msg:'Zendesk URL is required.' });
@@ -22,7 +22,7 @@ $(document).ready(function() {
 
         if(errors.length == 0) {
             var timezone = -(new Date()).getTimezoneOffset()/60;
-            $('div.system_msg').html('<a class="ajax_loader"></a> Testing your credentials.');
+            $('div.system_msg', app).html('<a class="ajax_loader"></a> Testing your credentials.');
             $.post(
                 base_url + 'config/Zendesk-VBX?op=test_credentials',
                 { url:url_el.val(), email:email_el.val(), password:password_el.val(), timezone:timezone },
@@ -36,21 +36,21 @@ $(document).ready(function() {
                         sys_msg_type = resp.type;
                     } catch(e) { sys_msg = 'Cannot validate your credentials due to an exception error.'; sys_msg_type = 'error';  }
 
-                    $('div.system_msg').html(sys_msg).css('color', sys_msg_type == 'error' ? 'red' : 'green');
+                    $('div.system_msg', app).html(sys_msg).css('color', sys_msg_type == 'error' ? 'red' : 'green');
                 },
                 'text'
             );
         } else {
-            $('div.system_msg').html('Cannot test credentials because of form validation errors.').css('color', 'red');
+            $('div.system_msg', app).html('Cannot test credentials because of form validation errors.').css('color', 'red');
             $.each(errors, function(k, v) {
-                if(v.name == 'zendesk_url') $('span.zendesk_url_err').text(v.msg);
-                else if(v.name == 'zendesk_email') $('span.zendesk_email_err').text(v.msg);
-                else if(v.name == 'zendesk_password') $('span.zendesk_password_err').text(v.msg);
+                if(v.name == 'zendesk_url') $('span.zendesk_url_err', app).text(v.msg);
+                else if(v.name == 'zendesk_email') $('span.zendesk_email_err', app).text(v.msg);
+                else if(v.name == 'zendesk_password') $('span.zendesk_password_err', app).text(v.msg);
             });
         }
     }
 
-    $('.zendesk_ticket_applet button.submit-button').click(function(e) {
+    $('button.zendesk_test_creds_btn').live('click', function(e) {
         var instance = $(this).parent().parent().parent();
         submitTestZendeskCredForm(instance);
         e.preventDefault();
