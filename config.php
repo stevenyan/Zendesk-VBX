@@ -23,14 +23,17 @@ if($op == 'test_credentials')
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url.'/users.json',
             CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_HEADER => false,
-            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HEADER => FALSE, // Helps differeniate from http and https
+            CURLOPT_FOLLOWLOCATION => FALSE,
             CURLOPT_USERPWD => "$email:$password",
-            CURLOPT_RETURNTRANSFER => true
+            CURLOPT_RETURNTRANSFER => TRUE
         ));
 
         $results = curl_exec($ch);
         $ch_info = curl_getinfo($ch);
+
+        error_log('RESULTS: '.json_encode($results));
+        error_log('CH_INFO: '.json_encode($ch_info));
 
         if(curl_errno($ch)) {
             error_log('CURL failed due to '.curl_error());

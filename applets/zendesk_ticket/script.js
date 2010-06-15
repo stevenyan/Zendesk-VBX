@@ -9,7 +9,7 @@ $(document).ready(function() {
 
         var errors = [];
         if(url_el.val().trim() == '') errors.push({ name:'zendesk_url', msg:'Zendesk URL is required.' });
-        else if(!url_el.val().match(/https*:\/\/[a-z0-9]+\.zendesk\.com/)) errors.push({ name:'zendesk_url', msg:'Zendesk URL nees to be like http://yoursite.zendesk.com' });
+        else if(!url_el.val().match(/https*:\/\/[a-z0-9]+\.zendesk\.com/)) errors.push({ name:'zendesk_url', msg:'Zendesk URL nees to be like http or https://yoursite.zendesk.com' });
 
         if(email_el.val().trim() == '') errors.push({ name:'zendesk_email', msg:'Email is required.' });
         if(password_el.val().trim() == '') errors.push({ name:'zendesk_password', msg:'Password is required.' });

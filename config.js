@@ -28,7 +28,7 @@ var config_page = {
 
         var errors = [];
         if(url_el.val().trim() == '') errors.push({ name:'zendesk_url', msg:'Zendesk URL is required.' });
-        else if(!url_el.val().match(/https*:\/\/[a-z0-9]+\.zendesk\.com/)) errors.push({ name:'zendesk_url', msg:'Zendesk URL nees to be like http://yoursite.zendesk.com' });
+        else if(!url_el.val().match(/https*:\/\/[a-z0-9]+\.zendesk\.com/)) errors.push({ name:'zendesk_url', msg:'Zendesk URL nees to be like https or http://yoursite.zendesk.com' });
 
         if(email_el.val().trim() == '') errors.push({ name:'zendesk_email', msg:'Token is required.' });
         if(password_el.val().trim() == '') errors.push({ name:'zendesk_password', msg:'Password is required.' });
