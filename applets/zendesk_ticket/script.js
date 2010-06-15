@@ -1,3 +1,9 @@
+if(typeof String.prototype.trim !== 'function') {
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/, ''); 
+    }
+}
+
 $(document).ready(function() {
     function submitTestZendeskCredForm(app) {
         var url_el = $('input[name="zendesk_url"]', app);
@@ -28,7 +34,7 @@ $(document).ready(function() {
                         var sys_msg_type = 'error';
                         sys_msg = resp.msg;
                         sys_msg_type = resp.type;
-                    } catch(e) { sys_msg = 'Cannot validate your credentials due to an exception error.'; }
+                    } catch(e) { sys_msg = 'Cannot validate your credentials due to an exception error.'; sys_msg_type = 'error';  }
 
                     $('div.system_msg').html(sys_msg).css('color', sys_msg_type == 'error' ? 'red' : 'green');
                 },
@@ -44,7 +50,7 @@ $(document).ready(function() {
         }
     }
 
-    $('#zendesk-test-creds-submit').live('click', function(e) {
+    $('.zendesk_ticket_applet button.submit-button').click(function(e) {
         var instance = $(this).parent().parent().parent();
         submitTestZendeskCredForm(instance);
         e.preventDefault();
@@ -52,7 +58,6 @@ $(document).ready(function() {
 
     // detect when voicemail applet user or group is chosen
     $(".zendesk_ticket_applet .usergroup-container").live('usergroup-selected', function(e, usergroup_label, type) {
-
     	// If a group was set, then we need the user to manually configure the prompt
     	$('.prompt-for-group', $(e.target).parent())[ type == 'group' ? 'show' : 'hide' ]();
 

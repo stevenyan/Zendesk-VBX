@@ -1,3 +1,9 @@
+if(typeof String.prototype.trim !== 'function') {
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/, ''); 
+    }
+}
+
 var config_page = {
     initialize: function() {
         config_page.render();
@@ -43,7 +49,6 @@ var config_page = {
                     try {
                         resp = resp.match(/JSON_DATA\>(.*)\<\/JSON_DATA/)[1];
                         resp = eval("(" + resp + ")");
-                        console.log(resp);
                         var sys_msg = '';
                         var sys_msg_type = 'error';
                         sys_msg = resp.msg;
