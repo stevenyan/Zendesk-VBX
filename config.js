@@ -34,10 +34,11 @@ var config_page = {
         if(password_el.val().trim() == '') errors.push({ name:'zendesk_password', msg:'Password is required.' });
 
         if(errors.length == 0) {
+            var timezone = -(new Date()).getTimezoneOffset()/60;
             $('div.system_msg').html('<a class="ajax_loader"></a> Testing your credentials.');
             $.post(
                 base_url + 'config/Zendesk-VBX?op=test_credentials',
-                { url:url_el.val(), email:email_el.val(), password:password_el.val() },
+                { url:url_el.val(), email:email_el.val(), password:password_el.val(), timezone:timezone },
                 function(resp) {
                     try {
                         resp = resp.match(/JSON_DATA\>(.*)\<\/JSON_DATA/)[1];

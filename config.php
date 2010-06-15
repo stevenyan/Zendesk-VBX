@@ -9,6 +9,7 @@ if($op == 'test_credentials')
         $email = @$_REQUEST['email'];
         $password = @$_REQUEST['password'];
         $url = @$_REQUEST['url'];
+        $timezone = int(@$_REQUEST['timezone'])
 
         $errors = array();
         if(empty($email)) $errors[] = array( 'msg'=>'Email is required.', 'name'=>'zendesk_email' );
@@ -92,7 +93,8 @@ if($op == 'test_credentials')
                 PluginStore::set('zendesk_user', array(
                     'url' => $url,
                     'email' => $email,
-                    'password' => $password
+                    'password' => $password,
+                    'timezone' => $timezone
                 ));
 
                 $results = array(
