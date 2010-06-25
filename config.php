@@ -1,11 +1,13 @@
 <?php
 $CI =& get_instance();
 $plugin = OpenVBX::$currentPlugin;
+$plugin = $plugin->getInfo();
+$plugin_url = base_url().'plugins/'.$plugin['dir_name'];
 $op = @$_REQUEST['op'];
 $zendesk_user = PluginData::get('zendesk_user');
 
 if(!function_exists('json_encode')) {
-    include($plugin->plugin_path.'/vendors/json.php');
+    include($plugin['plugin_path'].'/vendors/json.php');
 }
 
 if($op == 'test_credentials') 
