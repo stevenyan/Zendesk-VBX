@@ -24,7 +24,7 @@ $(document).ready(function() {
             var timezone = -(new Date()).getTimezoneOffset()/60;
             $('div.system_msg', app).html('<a class="ajax_loader"></a> Testing your credentials.');
             $.post(
-                base_url + 'config/Zendesk-VBX?op=test_credentials',
+                base_url + 'config/' + plugin_dir + '?op=test_credentials',
                 { url:url_el.val(), email:email_el.val(), password:password_el.val(), timezone:timezone },
                 function(resp) {
                     try {

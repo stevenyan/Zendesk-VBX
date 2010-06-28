@@ -1,6 +1,7 @@
 <?php
 $CI =& get_instance();
-$zendesk_user = PluginStore::get('zendesk_user');
+$plugin_info = $plugin->getInfo();
+$zendesk_user = PluginData::get('zendesk_user');
 $currentlyIsUser = AppletInstance::getUserGroupPickerValue('permissions') instanceof VBX_User; 
 ?>
 <style>
@@ -71,4 +72,5 @@ span[class$="err"] { color:red; }
 <script>
 var base_url = '<?php echo base_url() ?>';
 var zendesk_user_data = <?php echo empty($zendesk_user) ? 'false' : 'true' ?>;
+var plugin_dir = '<?php echo $plugin_info['dir_name'] ?>';
 </script>
